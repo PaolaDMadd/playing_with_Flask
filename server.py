@@ -4,26 +4,6 @@ from flask_cors import CORS
 from werkzeug import exceptions
 from db import get_db
 
-server = Flask(__name__)
-CORS(server)
-
-@server.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
-
-
-def init_db():
-    with server.app_context():
-        db = get_db()
-        with server.open_resource('se
-        eds.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-            for row in db.execute('SELECT * FROM trainers;'):
-                print(row)
-        db.commit()
-
 
 
 @server.route('/')

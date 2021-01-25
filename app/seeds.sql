@@ -7,9 +7,9 @@ CREATE TABLE trainers (
 );
 
 INSERT INTO trainers
-    (brand, country)
+    (id, brand, country)
 VALUES
-    ('Nike', 'USA'),
-    ('Adidas', 'Germany'),
-    ('Mizuno', 'Japan');
+    (1, 'Nike', 'USA'),
+    (2, 'Adidas', 'Germany'),
+    (3, 'Mizuno', 'Japan');
 

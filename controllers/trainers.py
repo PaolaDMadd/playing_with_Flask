@@ -1,12 +1,24 @@
 ''' Shoes controller '''
 from werkzeug.exceptions import BadRequest
+from flask import Flask, g, jsonify, request
+from app.db import get_db
 
 
 def index(req):
-    return [t for t in trainers], 200
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM trainers")
+    trainers = cursor.fetchall()
+    return trainers, 200
+   
 
 def show(req, uid):
-    return find_by_uid(uid), 200
+    trainers = find_by_uid(uid)
+    if trainers is None:
+        return f"We don't have that brand with id {uid}!", 404
+    else:
+        return trainers, 200
+
 
 # def create(req):
 #     new_cat = req.get_json()
@@ -28,7 +40,7 @@ def show(req, uid):
 #     return cat, 204
 
 def find_by_uid(uid):
-    try:
-        return next(shoe for shoe in trainers if shoe['id'] == uid)
-    except:
-        raise BadRequest(f"We don't have that brand with id {uid}!")
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute(f"SELECT * FROM trainers WHERE id = {uid}")
+    return cursor.fetchone()
